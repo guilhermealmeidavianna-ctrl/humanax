@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HumanaX AI — Inteligência operacional para mineração e obras de terra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-elevated: #f7f9fc;
+    --bg-card: #ffffff;
+    --bg-light: #eef3f9;
+    --ink: #0c2340;
+    --ink-soft: #2a3f5f;
+    --ink-dim: #5a6b85;
+    --ink-faded: #8e9bb0;
+    --rule: #dde4ee;
+    --rule-bright: #c5d2e3;
+    --accent: #00a8cc;
+    --accent-soft: #2bbfdf;
+    --accent-deep: #007a99;
+    --paper-cool: #f1f5fa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter Tight', -apple-system, sans-serif;
+    font-weight: 400;
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/><feColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.13 0 0 0 0 0.25 0 0 0 0.025 0'/></filter><rect width='200' height='200' filter='url(%23n)'/></svg>");
+    pointer-events: none;
+    z-index: 1;
+    mix-blend-mode: multiply;
+    opacity: 0.5;
+  }
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 100% 0%, rgba(0, 168, 204, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 0 32px;
+    position: relative;
+    z-index: 2;
+  }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    backdrop-filter: blur(16px) saturate(140%);
+    background: rgba(255, 255, 255, 0.85);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 32px;
+    max-width: 1320px;
+    margin: 0 auto;
+  }
+  .brand {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: baseline;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .brand-x { color: var(--accent); font-weight: 600; }
+  .brand-suffix {
+    color: var(--ink);
+    font-weight: 400;
+    margin-left: 8px;
+    font-size: 0.8em;
+    opacity: 0.65;
+  }
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    list-style: none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .nav-links a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-cta {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--bg);
+    background: var(--ink);
+    padding: 10px 18px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-cta:hover { background: var(--accent); color: var(--bg); }
+
+  .hero {
+    padding: 180px 0 100px;
+    position: relative;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 28px;
+    margin-bottom: 56px;
+    border-bottom: 1px solid var(--rule);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+  }
+  .hero-meta .left { display: flex; gap: 28px; flex-wrap: wrap; }
+  .hero-meta .left span { display: flex; align-items: center; gap: 8px; }
+  .pulse-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(0, 168, 204, 0.5);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0, 168, 204, 0.5); }
+    50% { box-shadow: 0 0 0 8px rgba(0, 168, 204, 0); }
+  }
+  .hero h1 {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: clamp(44px, 6.8vw, 96px);
+    line-height: 1.0;
+    letter-spacing: -0.035em;
+    margin-bottom: 64px;
+    max-width: 1180px;
+  }
+  .hero h1 em { font-style: normal; font-weight: 600; color: var(--accent); }
+  .hero h1 .strike { position: relative; display: inline-block; }
+  .hero h1 .strike::after {
+    content: "";
+    position: absolute;
+    left: -2%; right: -2%;
+    top: 55%;
+    height: 1.5px;
+    background: var(--ink);
+    opacity: 0.4;
+    transform: rotate(-2deg);
+  }
+  .hero-grid {
+    display: block;
+    max-width: 720px;
+  }
+  .hero-lede {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 540px;
+  }
+  .hero-lede strong { color: var(--ink); font-weight: 600; }
+  .hero-actions { display: flex; gap: 16px; margin-top: 32px; flex-wrap: wrap; }
+  .btn {
+    font-size: 14px;
+    font-weight: 500;
+    padding: 14px 22px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary { background: var(--ink); color: var(--bg); border: 1px solid var(--ink); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+  .btn-ghost:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+  .pillars { border-left: 1px solid var(--rule); padding-left: 32px; }
+  .pillars h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+    margin-bottom: 24px;
+  }
+  .pillars-list { list-style: none; }
+  .pillars-list li {
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 20px;
+    font-size: 14px;
+    align-items: baseline;
+  }
+  .pillars-list li:last-child { border-bottom: 1px solid var(--rule); }
+  .pillars-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faded);
+    letter-spacing: 0.1em;
+  }
+  .pillars-text { color: var(--ink-soft); line-height: 1.45; }
+  .pillars-text strong {
+    color: var(--ink);
+    font-weight: 600;
+    display: block;
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 16px;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .ticker {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 18px 0;
+    overflow: hidden;
+  }
+  .ticker-track {
+    display: flex;
+    gap: 64px;
+    white-space: nowrap;
+    animation: scroll 50s linear infinite;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .ticker-track span { display: inline-flex; align-items: center; gap: 16px; }
+  .ticker-track span::after {
+    content: "";
+    width: 4px; height: 4px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  @keyframes scroll {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .section { padding: 140px 0; position: relative; }
+  .section-header {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 64px;
+    margin-bottom: 80px;
+    align-items: start;
+  }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+    padding-top: 8px;
+    border-top: 1px solid var(--ink);
+  }
+  .section-label strong {
+    color: var(--ink);
+    font-weight: 600;
+    display: block;
+    margin-top: 8px;
+    font-size: 13px;
+  }
+  .section-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: clamp(34px, 4.2vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 24px;
+    max-width: 920px;
+  }
+  .section-title em { font-style: normal; color: var(--accent); font-weight: 600; }
+  .section-sub {
+    font-size: 18px;
+    color: var(--ink-soft);
+    max-width: 640px;
+    line-height: 1.55;
+  }
+
+  .problem {
+    background: var(--paper-cool);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .split-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+  }
+  .split-col {
+    background: var(--bg);
+    padding: 56px 48px;
+    position: relative;
+  }
+  .split-col h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-faded);
+    margin-bottom: 28px;
+  }
+  .split-col.solved h3 { color: var(--accent-deep); }
+  .split-col ul { list-style: none; }
+  .split-col li {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 17px;
+    line-height: 1.4;
+    color: var(--ink-soft);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .split-col li:last-child { border-bottom: none; }
+  .split-col li::before { content: "—"; color: var(--ink-faded); flex-shrink: 0; }
+  .split-col.solved li::before {
+    content: "✓";
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  .split-col.solved li { color: var(--ink); }
+
+  .profiles-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--ink);
+    border: 1px solid var(--ink);
+  }
+  .profile-card {
+    background: var(--bg);
+    padding: 56px 44px;
+    transition: background 0.3s;
+    position: relative;
+  }
+  .profile-card:hover { background: var(--paper-cool); }
+  .profile-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faded);
+    letter-spacing: 0.2em;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .profile-num .badge {
+    color: var(--accent-deep);
+    font-weight: 500;
+    background: var(--bg-light);
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+  }
+  .profile-name {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    margin-bottom: 8px;
+  }
+  .profile-name em { font-style: normal; color: var(--accent); font-weight: 700; }
+  .profile-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+  }
+  .profile-pitch {
+    font-family: 'Inter Tight', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-bottom: 24px;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+  }
+  .profile-desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    margin-bottom: 32px;
+  }
+  .profile-modules-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-faded);
+    margin-bottom: 14px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+  .profile-modules { list-style: none; }
+  .profile-modules li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .profile-modules li::before { content: "›"; color: var(--accent); font-weight: 500; }
+
+  .security-band {
+    margin-top: 48px;
+    border: 1px solid var(--accent);
+    padding: 56px;
+    background:
+      linear-gradient(135deg, rgba(0, 168, 204, 0.06) 0%, transparent 70%),
+      var(--bg);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* === FOUR PILLARS BAR (hero bottom) === */
+  .pillars-bar {
+    margin-top: 64px;
+    border-top: 1px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .pillar-cell {
+    padding: 32px 24px 36px;
+    border-right: 1px solid var(--rule);
+    transition: background 0.2s;
+  }
+  .pillar-cell:last-child { border-right: none; }
+  .pillar-cell:hover { background: var(--paper-cool); }
+
+  .pillar-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-deep);
+    letter-spacing: 0.18em;
+    margin-bottom: 18px;
+    font-weight: 500;
+  }
+
+  .pillar-title {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+
+  .pillar-desc {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  /* === CONSULTORIA === */
+  .consultoria {
+    background: var(--paper-cool);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* === PLATAFORMA (how it works) === */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .how-card {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    padding: 48px 36px;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .how-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px -20px rgba(12, 35, 64, 0.2);
+  }
+
+  .how-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 48px;
+    height: 3px;
+    background: var(--accent);
+  }
+
+  .card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-deep);
+    letter-spacing: 0.2em;
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+
+  .how-card h3 {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+
+  .how-card h3 em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .how-card p {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* === IMPACTO === */
+  .results-section {
+    background: var(--paper-cool);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .result-card {
+    background: var(--bg);
+    border: 1px solid var(--ink);
+    padding: 48px 36px;
+    transition: all 0.3s;
+    position: relative;
+  }
+
+  .result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px -20px rgba(12, 35, 64, 0.25);
+  }
+
+  .result-card h3 {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+
+  .result-card h3 em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .result-card p {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+  }
+
+  /* === GOVERNANCE NOTE === */
+  .governance-note {
+    margin-top: 80px;
+    padding: 48px 56px;
+    border: 1px solid rgba(0, 168, 204, 0.4);
+    background: linear-gradient(135deg, rgba(0, 168, 204, 0.08) 0%, transparent 70%);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .governance-note h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent-soft);
+    margin: 0;
+  }
+
+  .governance-note p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.55;
+    margin: 0;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 400;
+  }
+
+  .governance-note p strong {
+    color: var(--bg);
+    font-weight: 600;
+    font-style: normal;
+  }
+
+  .consultoria-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+
+  .consultoria-card {
+    background: var(--bg);
+    border: 1px solid var(--ink);
+    padding: 56px 48px;
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .consultoria-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px -20px rgba(12, 35, 64, 0.25);
+  }
+
+  .consultoria-card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 64px;
+    height: 4px;
+    background: var(--accent);
+  }
+
+  .consultoria-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-faded);
+    letter-spacing: 0.2em;
+    margin-bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .consultoria-num .badge {
+    color: var(--accent-deep);
+    font-weight: 500;
+    background: var(--bg-light);
+    padding: 4px 10px;
+    border-radius: 100px;
+    font-size: 10px;
+  }
+
+  .consultoria-name {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+    max-width: 380px;
+  }
+
+  .consultoria-name em {
+    font-style: normal;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .consultoria-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+  }
+
+  .consultoria-pitch {
+    font-family: 'Inter Tight', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1.4;
+    margin-bottom: 24px;
+    padding-left: 16px;
+    border-left: 2px solid var(--accent);
+  }
+
+  .consultoria-desc {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .consultoria-deliverables-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-faded);
+    margin-bottom: 14px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .consultoria-deliverables {
+    list-style: none;
+  }
+
+  .consultoria-deliverables li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+    padding: 6px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    line-height: 1.5;
+  }
+
+  .consultoria-deliverables li::before {
+    content: "›";
+    color: var(--accent);
+    font-weight: 500;
+    flex-shrink: 0;
+    line-height: 1.5;
+  }
+
+  .consultoria-note {
+    margin-top: 56px;
+    padding: 40px 48px;
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+  }
+
+  .consultoria-note h4 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--accent-deep);
+    margin-bottom: 12px;
+  }
+
+  .consultoria-note p {
+    font-size: 16px;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    max-width: 880px;
+  }
+
+  .consultoria-note p strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .security-band::before {
+    content: "// SEGURANÇA";
+    position: absolute;
+    top: 18px; right: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent-deep);
+    opacity: 0.7;
+  }
+  .security-band h3 {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: clamp(26px, 3vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    max-width: 820px;
+  }
+  .security-band h3 em { font-style: normal; color: var(--accent); font-weight: 600; }
+  .security-band p {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 720px;
+    line-height: 1.55;
+  }
+
+  .ladder-section {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 160px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .ladder-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+  .ladder-section .section-label { color: rgba(255,255,255,0.5); border-color: var(--accent); }
+  .ladder-section .section-label strong { color: var(--bg); }
+  .ladder-section .section-sub { color: rgba(255,255,255,0.7); }
+  .ladder {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 72px;
+    position: relative;
+  }
+  .ladder::before {
+    content: "";
+    position: absolute;
+    top: 56px;
+    left: 6%; right: 6%;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.3) 0%, var(--accent) 100%);
+    z-index: 0;
+  }
+  .ladder-step {
+    position: relative;
+    padding: 36px 32px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.03);
+    z-index: 1;
+    backdrop-filter: blur(8px);
+  }
+  .ladder-step .marker {
+    position: absolute;
+    top: 28px; right: 28px;
+    width: 14px; height: 14px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+  }
+  .ladder-step:nth-child(1) .marker { background: rgba(255,255,255,0.4); }
+  .ladder-step:nth-child(2) .marker {
+    background: var(--accent-soft);
+    box-shadow: 0 0 12px var(--accent);
+  }
+  .ladder-step:nth-child(3) .marker {
+    background: var(--accent);
+    box-shadow: 0 0 16px var(--accent);
+  }
+  .ladder-step .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+  .ladder-step h4 {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: 26px;
+    margin-bottom: 14px;
+    letter-spacing: -0.02em;
+  }
+  .ladder-step p { font-size: 14px; color: rgba(255,255,255,0.7); line-height: 1.55; }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin-top: 80px;
+    border-top: 1px solid rgba(255,255,255,0.15);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  .stat {
+    padding: 48px 24px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    position: relative;
+  }
+  .stat:last-child { border-right: none; }
+  .stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 24px;
+  }
+  .stat-value {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: clamp(40px, 4vw, 56px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--bg);
+    margin-bottom: 12px;
+  }
+  .stat-value sup {
+    font-size: 0.4em;
+    color: var(--accent-soft);
+    font-style: normal;
+    font-weight: 400;
+    margin-left: 4px;
+    vertical-align: super;
+  }
+  .stat-desc { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+  .implementation { background: var(--paper-cool); border-bottom: 1px solid var(--rule); }
+  .phases-list { list-style: none; border-top: 1px solid var(--ink); }
+  .phases-list > li {
+    border-bottom: 1px solid var(--rule);
+    padding: 36px 0;
+    display: grid;
+    grid-template-columns: 80px 1fr 240px 140px;
+    gap: 32px;
+    align-items: center;
+    transition: background 0.2s;
+  }
+  .phases-list > li:hover { background: rgba(255,255,255,0.5); }
+  .phase-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--accent);
+    font-style: normal;
+    letter-spacing: 0;
+  }
+  .phase-content strong {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    display: block;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .phase-content span {
+    font-size: 15px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+    display: block;
+    max-width: 520px;
+  }
+  .phase-gate {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .phase-gate strong {
+    color: var(--accent-deep);
+    display: block;
+    margin-bottom: 4px;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+  }
+  .phase-duration {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--ink-dim);
+    text-align: right;
+    letter-spacing: 0.05em;
+  }
+
+  .final-cta {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 180px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .final-cta::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at center, rgba(0, 168, 204, 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse at 30% 80%, rgba(0, 168, 204, 0.08) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .final-cta .container { text-align: center; }
+  .final-cta .principle-mark {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent-soft);
+    margin-bottom: 32px;
+  }
+  .final-cta h2 {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: clamp(40px, 5.5vw, 76px);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin-bottom: 32px;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .final-cta h2 em { font-style: normal; color: var(--accent-soft); font-weight: 600; }
+  .final-cta p {
+    font-size: 19px;
+    color: rgba(255,255,255,0.7);
+    max-width: 620px;
+    margin: 0 auto 48px;
+    line-height: 1.5;
+  }
+  .final-cta .btn-primary { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+  .final-cta .btn-primary:hover { background: var(--bg); border-color: var(--bg); color: var(--ink); }
+  .final-cta .btn-ghost { background: transparent; color: var(--bg); border-color: rgba(255,255,255,0.4); }
+  .final-cta .btn-ghost:hover { background: var(--bg); color: var(--ink); border-color: var(--bg); }
+
+  footer {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 80px 0 40px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 48px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+  }
+  .footer-brand {
+    font-family: 'Inter Tight', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  .footer-brand .x-mark { color: var(--accent); }
+  .footer-brand .ai-mark {
+    font-size: 0.6em;
+    font-weight: 400;
+    margin-left: 10px;
+    opacity: 0.7;
+  }
+  .footer-tagline {
+    color: rgba(255,255,255,0.65);
+    font-size: 15px;
+    line-height: 1.55;
+    max-width: 360px;
+  }
+  .footer-col h5 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 24px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li { margin-bottom: 12px; }
+  .footer-col a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--accent-soft); }
+  .footer-bar {
+    padding-top: 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (max-width: 980px) {
+    .container { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 130px 0 70px; }
+    .section-header { grid-template-columns: 1fr; gap: 24px; }
+    .section { padding: 90px 0; }
+    .split-grid { grid-template-columns: 1fr; }
+    .profiles-grid { grid-template-columns: 1fr; }
+    .consultoria-grid { grid-template-columns: 1fr; }
+    .how-grid { grid-template-columns: 1fr; }
+    .results-grid { grid-template-columns: 1fr; }
+    .pillars-bar { grid-template-columns: 1fr 1fr; }
+    .pillar-cell { border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+    .pillar-cell:nth-child(2n) { border-right: none; }
+    .pillar-cell:nth-last-child(-n+2) { border-bottom: none; }
+    .governance-note { grid-template-columns: 1fr; gap: 18px; padding: 36px 28px; }
+    .ladder { grid-template-columns: 1fr; }
+    .ladder::before { display: none; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+    .stat:nth-child(2) { border-right: none; }
+    .stat:nth-child(1), .stat:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .phases-list > li { grid-template-columns: 60px 1fr; gap: 16px; }
+    .phase-gate, .phase-duration { grid-column: 2; text-align: left; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .hero-meta { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .split-col, .profile-card, .security-band, .consultoria-card, .consultoria-note { padding: 36px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="brand">
+      Humana<span class="brand-x">X</span><span class="brand-suffix">AI</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#problema">Problema</a></li>
+      <li><a href="#plataforma">Plataforma</a></li>
+      <li><a href="#solucoes">Soluções</a></li>
+      <li><a href="#maturidade">Como entregamos</a></li>
+      <li><a href="#consultoria">Consultoria</a></li>
+      <li><a href="#implantacao">Implantação</a></li>
+    </ul>
+    <a href="#contato" class="nav-cta">Solicitar diagnóstico →</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-meta">
+      <div class="left">
+        <span><span class="pulse-dot"></span>EM PRODUÇÃO · BRASIL</span>
+        <span>MINERAÇÃO · TERRAPLANAGEM · OBRAS DE TERRA · LOCADORAS</span>
+      </div>
+      <span>HUMANAX AI</span>
+    </div>
+
+    <h1>
+      Soluções de gestão operacional para mineração, terraplanagem e <em>locadoras de equipamentos.</em>
+    </h1>
+
+    <div class="hero-grid">
+      <div>
+        <p class="hero-lede">
+          A <strong>HumanaX AI</strong> conecta telemetria, rotina operacional e governança em uma plataforma única — entregando decisão confiável em <strong>produção</strong>, <strong>manutenção</strong>, <strong>segurança</strong> e <strong>ativos</strong>. Aplicação validada em ciclo real de mineração brasileira.
+        </p>
+        <div class="hero-actions">
+          <a href="#solucoes" class="btn btn-primary">Conhecer as soluções →</a>
+          <a href="#contato" class="btn btn-ghost">Solicitar diagnóstico</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="pillars-bar">
+      <div class="pillar-cell">
+        <div class="pillar-num">01 / GESTÃO</div>
+        <div class="pillar-title">Gestão de produção</div>
+        <p class="pillar-desc">Despacho dinâmico, ciclo, gargalos do turno e performance auditável por frente, equipamento e operador.</p>
+      </div>
+      <div class="pillar-cell">
+        <div class="pillar-num">02 / IA APLICADA</div>
+        <div class="pillar-title">Manutenção operacional com IA</div>
+        <p class="pillar-desc">Plano preventivo, OS, fila de oficina, diesel e pneus — com inteligência aplicada à saúde do equipamento.</p>
+      </div>
+      <div class="pillar-cell">
+        <div class="pillar-num">03 / SMS</div>
+        <div class="pillar-title">Segurança operacional</div>
+        <p class="pillar-desc">Eventos de condução, ranking de risco por operador, hotspots geográficos e camada avançada com câmera e fadiga.</p>
+      </div>
+      <div class="pillar-cell">
+        <div class="pillar-num">04 / GOVERNANÇA</div>
+        <div class="pillar-title">Governança de ativos</div>
+        <p class="pillar-desc">Disponibilidade física por contrato, MTBF, MTTR, valor residual e relatórios contratuais auditáveis.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span>Genesis Cycle</span>
+    <span>Geofence Detector</span>
+    <span>Powertrain ML</span>
+    <span>Thermal Intelligence</span>
+    <span>Pressure Intelligence</span>
+    <span>Despacho Dinâmico</span>
+    <span>Performance AI</span>
+    <span>Shadow Runners</span>
+    <span>Genesis Cycle</span>
+    <span>Geofence Detector</span>
+    <span>Powertrain ML</span>
+    <span>Thermal Intelligence</span>
+    <span>Pressure Intelligence</span>
+    <span>Despacho Dinâmico</span>
+    <span>Performance AI</span>
+    <span>Shadow Runners</span>
+  </div>
+</div>
+
+<section class="section problem reveal" id="problema">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">
+        01
+        <strong>Diagnóstico</strong>
+      </div>
+      <div>
+        <h2 class="section-title">O problema não é falta de dado. <em>É falta de decisão.</em></h2>
+        <p class="section-sub">
+          A telemetria já existe na maioria das operações. O que falta é transformar esse volume de sinais em uma rotina simples, confiável e acionável. Sem método, o dado vira ruído. Sem dono, o indicador vira discussão. Sem evidência, a decisão volta para a percepção.
+        </p>
+      </div>
+    </div>
+
+    <div class="split-grid">
+      <div class="split-col">
+        <h3>SINTOMAS TÍPICOS</h3>
+        <ul>
+          <li>Decisão por percepção, sem método e sem evidência</li>
+          <li>Números inconsistentes entre turnos, sites e planilhas</li>
+          <li>Telemetria crua, sem interpretação e sem rotina</li>
+          <li>Alertas demais (ruído) ou alertas tarde demais (reação)</li>
+          <li>Sem governança: ninguém é dono do número</li>
+        </ul>
+      </div>
+      <div class="split-col solved">
+        <h3>O QUE A OPERAÇÃO QUER DE VERDADE</h3>
+        <ul>
+          <li>Uma rotina simples que puxa o usuário todo dia</li>
+          <li>Segurança como prioridade, sem discutir payback</li>
+          <li>Performance com indicadores auditáveis</li>
+          <li>Previsibilidade: risco antes da falha catastrófica</li>
+          <li>Implantação que fecha o ciclo de uso</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="plataforma">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">
+        02
+        <strong>Plataforma</strong>
+      </div>
+      <div>
+        <h2 class="section-title">A camada que conecta telemetria, operação e <em>decisão.</em></h2>
+        <p class="section-sub">
+          A HumanaX usa os dados de telemetria que sua operação gera para estruturar método, indicadores, evidências, rotinas e recomendações inteligentes. O objetivo é simples: fazer o dado chegar na decisão certa, para a pessoa certa, no momento certo.
+        </p>
+      </div>
+    </div>
+
+    <div class="how-grid">
+      <article class="how-card">
+        <div class="card-num">01 · INTEGRA</div>
+        <h3><em>Dados</em> de campo</h3>
+        <p>Conecta sinais de telemetria, eventos operacionais, cadastros, geofences, turnos, ativos e operadores em uma leitura única da operação.</p>
+      </article>
+      <article class="how-card">
+        <div class="card-num">02 · ORGANIZA</div>
+        <h3><em>Rotina</em> e método</h3>
+        <p>Cria indicadores com definição única, responsáveis claros, cadência de acompanhamento e evidência para evitar discussão improdutiva.</p>
+      </article>
+      <article class="how-card">
+        <div class="card-num">03 · DECIDE</div>
+        <h3><em>Ação</em> orientada</h3>
+        <p>Prioriza exceções, identifica gargalos e sugere ações com rastreabilidade, permitindo que a operação avance de controle para inteligência.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section reveal" id="solucoes">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">
+        03
+        <strong>Soluções</strong>
+      </div>
+      <div>
+        <h2 class="section-title">Quatro pacotes. <em>Uma plataforma</em> que evolui com a operação.</h2>
+        <p class="section-sub">
+          A HumanaX AI é entregue em quatro soluções pré-configuradas. Cada uma é um pacote de módulos pensado para um cenário específico — da operação que está estruturando a gestão diária ao despacho dinâmico em frotas maduras. Sites diferentes da mesma empresa podem operar em soluções diferentes, refletindo maturidades distintas.
+        </p>
+      </div>
+    </div>
+
+    <div class="profiles-grid">
+
+      <article class="profile-card">
+        <div class="profile-num">
+          <span>SOLUÇÃO 01</span>
+          <span class="badge">ENTRADA</span>
+        </div>
+        <h3 class="profile-name"><em>Core</em></h3>
+        <div class="profile-tag">Gestão & Segurança</div>
+        <p class="profile-pitch">
+          "Estruturar a gestão diária com método, sem complexidade desnecessária."
+        </p>
+        <p class="profile-desc">
+          Para operações de pequeno e médio porte que querem profissionalizar a rotina diária — produção, manutenção, pneus, diesel e segurança base.
+        </p>
+        <div class="profile-modules-label">MÓDULOS</div>
+        <ul class="profile-modules">
+          <li>Produção · horímetro, viagens, turno</li>
+          <li>Manutenção · OS, plano preventivo, fila</li>
+          <li>TireOps · gestão diária de pneus</li>
+          <li>Segurança base · perfil de condução</li>
+        </ul>
+      </article>
+
+      <article class="profile-card">
+        <div class="profile-num">
+          <span>SOLUÇÃO 02</span>
+          <span class="badge">PREMIUM</span>
+        </div>
+        <h3 class="profile-name"><em>Dispatch</em></h3>
+        <div class="profile-tag">Performance Premium</div>
+        <p class="profile-pitch">
+          "Disciplina operacional via despacho: a equipe usa sem pensar."
+        </p>
+        <p class="profile-desc">
+          Para operações maduras que querem reduzir fila, reduzir tempo ocioso e estabilizar a produção via despacho dinâmico.
+        </p>
+        <div class="profile-modules-label">MÓDULOS</div>
+        <ul class="profile-modules">
+          <li>Despacho dinâmico · alocação por ciclo</li>
+          <li>Auto-detecção de ciclo · sem input manual</li>
+          <li>Performance AI · gargalos do turno</li>
+          <li>Painel de turno ao vivo</li>
+        </ul>
+      </article>
+
+      <article class="profile-card">
+        <div class="profile-num">
+          <span>SOLUÇÃO 03</span>
+          <span class="badge">CAPEX</span>
+        </div>
+        <h3 class="profile-name"><em>Asset Control</em></h3>
+        <div class="profile-tag">Locadoras & Ativo</div>
+        <p class="profile-pitch">
+          "Proteção de CAPEX e disponibilidade, com risco antes da falha."
+        </p>
+        <p class="profile-desc">
+          Para locadoras, frotas próprias com foco em valor residual e gestoras de ativos. Foco em saúde de equipamento e prevenção.
+        </p>
+        <div class="profile-modules-label">MÓDULOS</div>
+        <ul class="profile-modules">
+          <li>Saúde de ativo · powertrain, térmico, pressão</li>
+          <li>Risco de falha em 30 dias</li>
+          <li>Disponibilidade física por contrato</li>
+          <li>MTBF e MTTR auditáveis</li>
+        </ul>
+      </article>
+
+      <article class="profile-card">
+        <div class="profile-num">
+          <span>SOLUÇÃO 04</span>
+          <span class="badge">SAFETY</span>
+        </div>
+        <h3 class="profile-name"><em>Fleet Safety</em></h3>
+        <div class="profile-tag">Grandes Frotas & Pessoas</div>
+        <p class="profile-pitch">
+          "Segurança como eixo central. Sem discutir payback."
+        </p>
+        <p class="profile-desc">
+          Para frotas diversificadas, alta presença de terceiros, e operações em que segurança é prioridade absoluta.
+        </p>
+        <div class="profile-modules-label">MÓDULOS</div>
+        <ul class="profile-modules">
+          <li>Ranking de risco por operador</li>
+          <li>Hotspots geográficos</li>
+          <li>Eventos nativos · velocidade, frenagem, G</li>
+          <li>Camada avançada · câmera e fadiga (opcional)</li>
+        </ul>
+      </article>
+
+    </div>
+
+    <div class="security-band">
+      <h3>Segurança operacional <em>não é módulo opcional.</em></h3>
+      <p>
+        Independentemente da solução contratada, todos os clientes recebem a camada base de segurança: eventos nativos de telemetria, perfil de condução por operador e turno, ranking de risco e governança com evidência. O que é opcional, com custo à parte, é a camada avançada de câmera e sensor de fadiga em cabine.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section results-section reveal" id="impacto">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">
+        04
+        <strong>Impacto</strong>
+      </div>
+      <div>
+        <h2 class="section-title">O valor aparece quando o dado muda a <em>rotina.</em></h2>
+        <p class="section-sub">
+          A HumanaX foi desenhada para gerar impacto operacional observável: menos ruído, mais previsibilidade, mais disciplina de execução e melhor uso dos ativos. O valor não vem do dado em si — vem da decisão repetida com método.
+        </p>
+      </div>
+    </div>
+
+    <div class="results-grid">
+      <article class="result-card">
+        <div class="card-num">01 · PRODUÇÃO</div>
+        <h3>Menos <em>ociosidade</em></h3>
+        <p>Identificação de filas, paradas, gargalos e desvios de ciclo para melhorar aderência ao plano e estabilidade do turno.</p>
+      </article>
+      <article class="result-card">
+        <div class="card-num">02 · CUSTO</div>
+        <h3>Mais <em>controle</em></h3>
+        <p>Leitura integrada de diesel, manutenção, pneus e disponibilidade para atacar anomalias antes que virem custo recorrente.</p>
+      </article>
+      <article class="result-card">
+        <div class="card-num">03 · RISCO</div>
+        <h3>Decisão com <em>evidência</em></h3>
+        <p>Rastreabilidade por indicador, por evento e por responsável, reduzindo ambiguidade entre planilhas, turnos e áreas.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section ladder-section reveal" id="maturidade">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">
+        05
+        <strong>Como entregamos</strong>
+      </div>
+      <div>
+        <h2 class="section-title">Metodologia, governança e <em>IA sob controle.</em></h2>
+        <p class="section-sub">
+          Os pilares operacionais não vêm de promessa de marketing — vêm de três disciplinas que estruturam o uso da plataforma: rotina aplicada por papel, governança auditável por indicador, e inteligência que evolui em estágios. Sem automação cega, sem dado órfão, sem responsável ambíguo.
+        </p>
+      </div>
+    </div>
+
+    <div class="ladder">
+      <div class="ladder-step">
+        <div class="marker"></div>
+        <div class="step-num">ESTÁGIO 01</div>
+        <h4>Shadow</h4>
+        <p>A plataforma calcula e registra a recomendação, mas não a apresenta como ação ao usuário. Serve para validar o número antes de mostrá-lo. O time observa, sem solavanco.</p>
+      </div>
+      <div class="ladder-step">
+        <div class="marker"></div>
+        <div class="step-num">ESTÁGIO 02</div>
+        <h4>Assistido</h4>
+        <p>A recomendação aparece como sugestão. O usuário decide se aplica ou não — e a plataforma aprende com aceitação e rejeição. A confiança é construída no uso real, decisão a decisão.</p>
+      </div>
+      <div class="ladder-step">
+        <div class="marker"></div>
+        <div class="step-num">ESTÁGIO 03</div>
+        <h4>Ativo</h4>
+        <p>A recomendação é aplicada automaticamente ou tratada como decisão padrão, com a equipe validando apenas exceções. Promoção registrada, com critério objetivo e logs de quem autorizou.</p>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat">
+        <div class="label">ROTINA DIÁRIA</div>
+        <div class="stat-value">15<sup>min</sup></div>
+        <div class="stat-desc">Por turno · acompanhamento dos indicadores e exceções.</div>
+      </div>
+      <div class="stat">
+        <div class="label">ROTINA SEMANAL</div>
+        <div class="stat-value">30<sup>min</sup></div>
+        <div class="stat-desc">Por semana · análise consolidada e ajustes.</div>
+      </div>
+      <div class="stat">
+        <div class="label">IMPLANTAÇÃO</div>
+        <div class="stat-value">06<sup>fases</sup></div>
+        <div class="stat-desc">Estruturada com gate de saída e aceite formal por fase.</div>
+      </div>
+      <div class="stat">
+        <div class="label">GOVERNANÇA</div>
+        <div class="stat-value">01<sup>dono</sup></div>
+        <div class="stat-desc">Por indicador. Sem ambiguidade entre planilhas.</div>
+      </div>
+    </div>
+
+    <div class="governance-note">
+      <h4>// PRINCÍPIO</h4>
+      <p><strong>Nenhuma decisão automatizada sem evidência acumulada.</strong> Cada recomendação carrega origem, regra, histórico, responsável e trilha de auditoria.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section consultoria reveal" id="consultoria">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">
+        06
+        <strong>Consultoria</strong>
+      </div>
+      <div>
+        <h2 class="section-title">Antes do dado, <em>a decisão de engenharia.</em></h2>
+        <p class="section-sub">
+          Há perguntas que nenhuma plataforma responde sozinha — e que definem o teto de performance da operação. Para essas perguntas, a HumanaX oferece consultoria especializada em duas frentes, conduzida por um time multidisciplinar de engenheiros e analistas operacionais.
+        </p>
+      </div>
+    </div>
+
+    <div class="consultoria-grid">
+
+      <article class="consultoria-card">
+        <div class="consultoria-num">
+          <span>SERVIÇO 01</span>
+          <span class="badge">ENGENHARIA</span>
+        </div>
+        <h3 class="consultoria-name"><em>Dimensionamento</em> de frota</h3>
+        <div class="consultoria-tag">Capacidade & Ciclo</div>
+        <p class="consultoria-pitch">
+          "Quantos equipamentos a operação realmente precisa — e de que tipo — para entregar o plano com folga sustentável?"
+        </p>
+        <p class="consultoria-desc">
+          Estudo de capacidade de produção a partir do plano de lavra e do ciclo real do site. Combina análise de telemetria histórica, simulação de cenários de fila e regimes de manutenção para recomendar o mix ideal de carregadeiras, caminhões e equipamentos de apoio. Identifica gargalos antes que virem custo recorrente.
+        </p>
+        <div class="consultoria-deliverables-label">ENTREGÁVEIS</div>
+        <ul class="consultoria-deliverables">
+          <li>Modelo de capacidade por frente e por turno</li>
+          <li>Recomendação de frota com cenários de sensibilidade</li>
+          <li>Análise de gargalos: carregamento, transporte, britador</li>
+          <li>Memória de cálculo auditável e premissas explícitas</li>
+          <li>Apresentação executiva com decisão de CAPEX</li>
+        </ul>
+      </article>
+
+      <article class="consultoria-card">
+        <div class="consultoria-num">
+          <span>SERVIÇO 02</span>
+          <span class="badge">PLANEJAMENTO</span>
+        </div>
+        <h3 class="consultoria-name"><em>Planejamento</em> de lavra</h3>
+        <div class="consultoria-tag">Curto, Médio & Longo Prazo</div>
+        <p class="consultoria-pitch">
+          "Sequência ótima de extração que respeita restrições reais — geológicas, operacionais e contratuais."
+        </p>
+        <p class="consultoria-desc">
+          Planejamento de lavra integrado com a realidade operacional do site. Curto prazo aderente ao despacho diário, médio prazo alinhado à manutenção e ao plano de bota-fora, longo prazo coerente com a vida útil do ativo. O resultado é um plano executável, não um exercício teórico que vira gaveta.
+        </p>
+        <div class="consultoria-deliverables-label">ENTREGÁVEIS</div>
+        <ul class="consultoria-deliverables">
+          <li>Plano de curto prazo: turno, semana, mês</li>
+          <li>Plano de médio prazo: trimestral e anual</li>
+          <li>Sequenciamento de blocos com restrições integradas</li>
+          <li>Planos alternativos para variação de cenário</li>
+          <li>Indicadores de aderência plano vs. real</li>
+        </ul>
+      </article>
+
+    </div>
+
+    <div class="consultoria-note">
+      <h4>SINERGIA COM A PLATAFORMA</h4>
+      <p>
+        Os dois serviços podem ser contratados de forma independente da plataforma. Para clientes da HumanaX AI, no entanto, a consultoria ganha um diferencial relevante: o estudo é alimentado pela <strong>telemetria real do site</strong> — ciclo medido, fila observada, disponibilidade auditada — em vez de premissas estimadas. O resultado é mais preciso, mais rápido de produzir e mais difícil de contestar.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section implementation reveal" id="implantacao">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label">
+        07
+        <strong>Implantação</strong>
+      </div>
+      <div>
+        <h2 class="section-title">Implantação não é entrega de software. <em>É fechar o ciclo.</em></h2>
+        <p class="section-sub">
+          Uma implantação é considerada bem-sucedida quando a plataforma vira rotina diária da operação — com um dono por indicador, evidência registrada e progressão de maturidade da IA sob controle. Cancelamento e baixa adesão são sintomas de implantação parcial, não de produto inadequado.
+        </p>
+      </div>
+    </div>
+
+    <ul class="phases-list">
+      <li>
+        <span class="phase-num">01</span>
+        <div class="phase-content">
+          <strong>Diagnóstico e setup</strong>
+          <span>Mapeamento da operação, dos papéis e da maturidade real dos dados. Recomendação de solução e criação do tenant.</span>
+        </div>
+        <div class="phase-gate">
+          <strong>GATE</strong>
+          Solução escolhida e tenant criado
+        </div>
+        <div class="phase-duration">1–2 sem</div>
+      </li>
+      <li>
+        <span class="phase-num">02</span>
+        <div class="phase-content">
+          <strong>Modelagem do site</strong>
+          <span>Cadastros e geofences validados em campo. Frentes, britador, oficina e abastecimento mapeados como zonas operacionais.</span>
+        </div>
+        <div class="phase-gate">
+          <strong>GATE</strong>
+          Geofences validadas
+        </div>
+        <div class="phase-duration">1–2 sem</div>
+      </li>
+      <li>
+        <span class="phase-num">03</span>
+        <div class="phase-content">
+          <strong>Configuração e provisionamento</strong>
+          <span>Acessos liberados, dados fluindo, solução aplicada com flags por site. Customização vira ajuste de configuração — não desenvolvimento.</span>
+        </div>
+        <div class="phase-gate">
+          <strong>GATE</strong>
+          Acessos e dados ativos
+        </div>
+        <div class="phase-duration">1 sem</div>
+      </li>
+      <li>
+        <span class="phase-num">04</span>
+        <div class="phase-content">
+          <strong>Treinamento por papel</strong>
+          <span>Diretor, PCM, supervisor e operador. Cada papel recebe material e duração específicos — sem treinar todos no mesmo evento.</span>
+        </div>
+        <div class="phase-gate">
+          <strong>GATE</strong>
+          Cada papel atestado
+        </div>
+        <div class="phase-duration">1–2 sem</div>
+      </li>
+      <li>
+        <span class="phase-num">05</span>
+        <div class="phase-content">
+          <strong>Go-live assistido</strong>
+          <span>Acompanhamento intensivo até a rotina diária estar consolidada e os indicadores no ar com dono e evidência.</span>
+        </div>
+        <div class="phase-gate">
+          <strong>GATE</strong>
+          Rotina diária ativa
+        </div>
+        <div class="phase-duration">2 sem</div>
+      </li>
+      <li>
+        <span class="phase-num">06</span>
+        <div class="phase-content">
+          <strong>Estabilização e handoff</strong>
+          <span>Aceite final e transferência para Customer Success. A IA começa a evoluir do Shadow ao Ativo, sem solavancos.</span>
+        </div>
+        <div class="phase-gate">
+          <strong>GATE</strong>
+          Aceite formal do cliente
+        </div>
+        <div class="phase-duration">2–4 sem</div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<section class="final-cta" id="contato">
+  <div class="container">
+    <div class="principle-mark">PRINCÍPIO ORIENTADOR</div>
+    <h2>O que não se mede,<br><em>não se gerencia.</em></h2>
+    <p>
+      Cada decisão operacional importante merece um número confiável, um responsável e uma rotina que torna o uso parte do dia a dia. Vamos começar pelo diagnóstico do seu site.
+    </p>
+    <div class="hero-actions" style="justify-content: center;">
+      <a href="mailto:contato@humanax.ai" class="btn btn-primary">Solicitar diagnóstico →</a>
+      <a href="#solucoes" class="btn btn-ghost">Ver soluções novamente</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand">Humana<span class="x-mark">X</span><span class="ai-mark">AI</span></div>
+        <p class="footer-tagline">
+          Plataforma de inteligência operacional para mineração, terraplanagem, obras de terra e locadoras de equipamentos. Telemetria de máquinas transformada em decisão confiável.
+        </p>
+      </div>
+      <div class="footer-col">
+        <h5>Soluções</h5>
+        <ul>
+          <li><a href="#solucoes">Core</a></li>
+          <li><a href="#solucoes">Dispatch</a></li>
+          <li><a href="#solucoes">Asset Control</a></li>
+          <li><a href="#solucoes">Fleet Safety</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Plataforma</h5>
+        <ul>
+          <li><a href="#plataforma">Como funciona</a></li>
+          <li><a href="#maturidade">IA & Governança</a></li>
+          <li><a href="#implantacao">Implantação</a></li>
+          <li><a href="#impacto">Impacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contato</h5>
+        <ul>
+          <li><a href="#contato">Diagnóstico</a></li>
+          <li><a href="#consultoria">Consultoria</a></li>
+          <li><a href="mailto:contato@humanax.ai">contato@humanax.ai</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bar">
+      <span>© 2026 HUMANAX AI</span>
+      <span>INTELIGÊNCIA OPERACIONAL APLICADA</span>
+      <span>BRASIL</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
